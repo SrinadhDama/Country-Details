@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Country Information</title>
+  <style>
+    img {
+      max-width: 200px;
+      max-height: 150px;
+    }
+    body{
+      background-image: url("map1.jpg");
+      color: rgb(250, 245, 246);
+      text-align: center;
+    }
+    #countryResult{
+      font-size: 25px;
+    }
+    #countryName{
+      font-size: 25px;
+    }
+    .button{
+      background-color: beige;
+      font-size: 25px;
+    }
+    h1{
+      font-size: 45px;
+    }
+  </style>
+  <script>
+    function getCountryInfo() {
+      // Get the user input
+      var countryName = document.getElementById("countryName").value;
+
+      // Create a new XMLHttpRequest object
+      var xhr = new XMLHttpRequest();
+
+      // Prepare the request
+      var url = "https://restcountries.com/v2/name/" + countryName + "?fullText=true";
+      xhr.open("GET", url, true);
+
+      // Set up the onload function
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          // Parse the response
+          var countryData = JSON.parse(xhr.responseText)[0];
+  
+          // Display the country information
+          document.getElementById("countryResult").innerHTML =
+            "<h2>" + countryData.name + "</h2>" +
+            "<p><strong>Capital:</strong> " + countryData.capital + "</p>" +
+            "<p><strong>Region:</strong> " + countryData.region + "</p>" +
+            "<p><strong>Subregion:</strong> " + countryData.subregion + "</p>" +
+            "<p><strong>Population:</strong> " + countryData.population + "</p>" +
+            "<p><strong>Latlng:</strong> " + countryData.latlng + "</p>" +
+            "<p><strong>Timezones:</strong> " + countryData.timezones + "</p>" +
+            "<p><strong>Gini:</strong> " + countryData.gini+ "</p>" +
+            "<p><strong>Numeric code:</strong> " + countryData.numericCode + "</p>" +
+            "<p><strong>Population:</strong> " + countryData.population + "</p>" +
+            "<p><strong>Native Name:</strong> " + countryData.nativeName + "</p>" +
+            "<p><strong>Borders:</strong> " + countryData.borders + "</p>" +
+            "<p><strong>Demonym:</strong> " + countryData.demonym + "</p>" +
+            "<p><strong>Alt Spellings:</strong> " + countryData.altSpellings+ "</p>" +
+            "<p><strong>Area:</strong> " + countryData.area + " km<sup>2</sup></p>" +
+            "<p><strong>Currency:</strong> " + countryData.currencies[0].name + " (" + countryData.currencies[0].code + ")" + "</p>" +
+            "<img src='" + countryData.flags.svg + "' alt='Flag' />";
+        } else {
+          // Handle the error
+          document.getElementById("countryResult").innerHTML =
+            "<p>Error retrieving country information.</p>";
+        }
+      };
+
+      // Send the request
+      xhr.send();
+    }
+  </script>
+</head>
+<body>
+    <h1>Country Information</h1>
+    <input type="text" id="countryName" placeholder="Enter country name" />
+    <button onclick="getCountryInfo()" class="button">Get Information</button>
+    <div id="countryResult"></div>
+</body>
+</html>
